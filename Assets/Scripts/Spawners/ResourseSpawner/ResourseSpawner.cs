@@ -1,14 +1,15 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public abstract class ResourseSpawner<T> : MonoBehaviour where T : EnvironmentItem
 {
     [SerializeField] protected TerrainLayersData TerrainLayersData;
-    [SerializeField] protected SpawnPointHandler SpawnersHandler;
+    [SerializeField] private SpawnPointHandler SpawnersHandler;
     [SerializeField] private T _prefab;
     [SerializeField] private int _poolCapacity = 5;
-    [SerializeField] protected int StartCount = 5;
+    [SerializeField] private int _startCount = 30;
 
     protected int LayerIndex;
 
@@ -16,6 +17,8 @@ public abstract class ResourseSpawner<T> : MonoBehaviour where T : EnvironmentIt
     private Vector3 _position = new Vector3(1, 20, 3);
     private int _poolMaxSize = 10;
     private int _currentActiveObjects = 0;
+    private float _currentSpawnTime = 0.5f;
+    private Coroutine _StartSpawnCoroutine;
 
     private void Awake()
     {
@@ -28,17 +31,38 @@ public abstract class ResourseSpawner<T> : MonoBehaviour where T : EnvironmentIt
             maxSize: _poolMaxSize);
     }
 
+    public virtual void Start()
+    {
+        _StartSpawnCoroutine = StartCoroutine(StartSpawn());
+    }
+
+    protected IEnumerator RefreshResourse()
+    {
+        var wait = new WaitForSeconds(_currentSpawnTime);
+
+        while (enabled)
+        {
+            if (_currentActiveObjects < _startCount)
+            {
+                _currentActiveObjects++;
+                EnableObject();
+            }
+
+            yield return wait;
+        }
+    }
+
     protected IEnumerator StartSpawn()
     {
-        int currentCount = 0;
-
-        while (currentCount < StartCount)
+        while (_currentActiveObjects < _startCount)
         {
-            currentCount++;
-            EnableObject();
+                _currentActiveObjects++;
+                EnableObject();
 
             yield return null;
         }
+
+        StartCoroutine(RefreshResourse());
     }
 
     private void EnableObject()
@@ -49,19 +73,20 @@ public abstract class ResourseSpawner<T> : MonoBehaviour where T : EnvironmentIt
 
     private void Initialize(EnvironmentItem item)
     {
+        item.transform.rotation = Quaternion.identity;
         item.gameObject.SetActive(true);
-        _currentActiveObjects++;
     }
 
     private void ReleasedObject(EnvironmentItem item)
     {
         _currentActiveObjects--;
+        item.transform.SetParent(transform, true);
         Pool.Release(item);
     }
 
     private EnvironmentItem CreateObject()
     {
-        EnvironmentItem item = Instantiate(_prefab, _position, Quaternion.identity);
+        EnvironmentItem item = Instantiate(_prefab, _position, Quaternion.identity, transform);
         item.Collected += ReleasedObject;
 
         return item;

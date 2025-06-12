@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SnowAreaResourseSpawner : ResourseSpawner<EnvironmentItem>
 {
-    private void Start()
+    public override void Start()
     {
         LayerIndex = TerrainLayersData.SnowLayer;
-        StartCoroutine(StartSpawn());
+        base.Start();
     }
 }

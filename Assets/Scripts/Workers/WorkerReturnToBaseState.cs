@@ -21,6 +21,14 @@ public class WorkerReturnToBaseState : State
         SetDesiredPosition(_worker.CurrentCampPosition);
     }
 
+    public override void FixedUpdate()
+    {
+        if (_mover.HasActivePath == false)
+        {
+            StateMachine.SetState<WorkerIdleState>();
+        }
+    }
+
     public override void Exit()
     {
         _controller.StopWalkAnimation();

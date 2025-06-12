@@ -158,7 +158,7 @@ MonoBehaviour:
   SpawnersHandler: {fileID: 1496507269}
   _prefab: {fileID: 486491548494706804, guid: 4a0aebd4fb12fc2448b7be7e78d16483, type: 3}
   _poolCapacity: 5
-  StartCount: 30
+  _startCount: 30
 --- !u!4 &13368963
 Transform:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   SpawnersHandler: {fileID: 1496507269}
   _prefab: {fileID: 9106769150085808251, guid: 0fd5be61d8c00de419d45d6bf745a69c, type: 3}
   _poolCapacity: 5
-  StartCount: 30
+  _startCount: 30
 --- !u!114 &13368965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,7 +207,18 @@ MonoBehaviour:
   SpawnersHandler: {fileID: 1496507269}
   _prefab: {fileID: 1630809486705648056, guid: 22a3fd8d3e59a1149bdcd775c0e87241, type: 3}
   _poolCapacity: 5
-  StartCount: 30
+  _startCount: 30
+--- !u!114 &28808084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3412195593712985280, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
+  m_PrefabInstance: {fileID: 1742013996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7b28386570af64292b78da2cde12f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &59663033
 GameObject:
   m_ObjectHideFlags: 3
@@ -778,6 +789,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54cafe1ff978a5a468a5ebc6848d72bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourseCollector: {fileID: 355237257}
+--- !u!114 &355237257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355237253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad673884744ccc41be7275c3d04ca2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &365579523
@@ -2487,14 +2511,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _terrainLayerHandler: {fileID: 1735414001}
-  _terrain: {fileID: 112274496}
-  _terrainMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _obstacleRadius: 10
   _ObstacleMask:
     serializedVersion: 2
     m_Bits: 3007
-  _obstacleRadius: 10
+  _terrainMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _terrain: {fileID: 112274496}
 --- !u!4 &1496507270
 Transform:
   m_ObjectHideFlags: 0
@@ -2676,8 +2700,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1721482253}
     - target: {fileID: 2541077617129030973, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
+      propertyPath: _resourseHandler
+      value: 
+      objectReference: {fileID: 28808084}
+    - target: {fileID: 2541077617129030973, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
       propertyPath: _startWorkerCount
-      value: 32
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2541077617129030973, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
       propertyPath: _spawnPointHandler
@@ -2699,6 +2727,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Camp
       objectReference: {fileID: 0}
+    - target: {fileID: 7361032902738232884, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
+      propertyPath: _detectingRadius
+      value: 550
+      objectReference: {fileID: 0}
+    - target: {fileID: 7361032902738232884, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
+      propertyPath: _resoursesMask.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2706,6 +2742,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4220030624775912518, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
       insertIndex: -1
       addedObject: {fileID: 355237256}
+    - targetCorrespondingSourceObject: {fileID: 4220030624775912518, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 355237257}
   m_SourcePrefab: {fileID: 100100000, guid: 145d1f2b5aa1a2340a2dc1cbb5f5f507, type: 3}
 --- !u!114 &1757035650 stripped
 MonoBehaviour:

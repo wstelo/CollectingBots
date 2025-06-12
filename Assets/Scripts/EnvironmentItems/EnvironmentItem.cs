@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(EnvironmentItemHealth))]
 
-public abstract class EnvironmentItem : MonoBehaviour
+public abstract class EnvironmentItem : MonoBehaviour, IResoursable
 {
     private EnvironmentItemHealth _health;
 
@@ -18,20 +18,22 @@ public abstract class EnvironmentItem : MonoBehaviour
     private void OnEnable()
     {
         _health.Refresh();
-        _health.Ended += ExtractedObject;
+        _health.Ended += ExtractObject;
     }
 
     private void OnDisable()
     {   
-        _health.Ended -= ExtractedObject;
+        _health.Ended -= ExtractObject;
     }
+
+    public abstract void Accept(IVisitor visitor);
 
     public void Extract(float damage)
     {
         _health.TakeDamage(damage);
     }
 
-    private void ExtractedObject()
+    private void ExtractObject()
     {
         Extracted?.Invoke(this);
     }

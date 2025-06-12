@@ -16,6 +16,7 @@ public class Worker : MonoBehaviour
     private Mover _mover;
 
     public event Action EmployedResourseDetected;
+    public event Action <Worker> FinishedWork;
 
     public EnvironmentItem CurrentResourse { get; private set; } = null;
     public Vector3 CurrentCampPosition => _currentCampPosition;
@@ -52,6 +53,16 @@ public class Worker : MonoBehaviour
     private void Update()
     {
         _stateMachine?.Update();
+    }
+
+    private void FixedUpdate()
+    {
+        _stateMachine?.FixedUpdate();
+    }
+
+    public void FinishWork()
+    {
+        FinishedWork?.Invoke(this);
     }
 
     public void SetNewTarget(Transform item)

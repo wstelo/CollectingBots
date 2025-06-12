@@ -1,29 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
+
 public class ResourseDetector : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
-    {
-        if (((1 << other.gameObject.layer) & _resoursesMask.value) != 0)
-        {
-            _resourses.Add(other);
+    [SerializeField] private LayerMask _resoursesMask;
+    [SerializeField] private int _detectingRadius = 550;
 
-            SortResoursesByDistance();
-        }
+    private SphereCollider _collider;
+
+    public event Action <EnvironmentItem> Entered;
+
+    private void Awake()
+    {
+        _collider = GetComponent<SphereCollider>();
+        _collider.isTrigger = true;
+        _collider.radius = _detectingRadius;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & _resoursesMask.value) != 0)
+        if(other.TryGetComponent(out EnvironmentItem item))
         {
-            if (_resourses.Contains(other))
-            {
-                _resourses.Remove(other);
-            }
-
-            SortResoursesByDistance();
+            Entered?.Invoke(item);
         }
     }
 }

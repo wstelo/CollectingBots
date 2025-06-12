@@ -11,6 +11,7 @@ public class WorkerIdleState : State
 
     public override void Enter()
     {
+        _worker.FinishWork();
         _controller.StartIdleAnimation();
         _worker.EmployedResourseDetected += WalkToPoint;
     }

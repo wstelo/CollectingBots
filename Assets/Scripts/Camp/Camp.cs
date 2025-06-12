@@ -8,12 +8,11 @@ using UnityEngine;
 public class Camp : MonoBehaviour
 {
 
-    [SerializeField] private ResourseHandler _resourseDetector;
+    [SerializeField] private ResourseHandler _resourseHandler;
     [SerializeField] private int _timeToRefreshResourse = 1;
     [SerializeField] private int _startWorkerCount = 3;
 
     private List<Worker> _unemployedWorkers = new List<Worker>();
-    private List<Worker> _employedWorkers = new List<Worker>();
     private WorkerHandler _workerHandler;
 
     private void Awake()
@@ -32,18 +31,23 @@ public class Camp : MonoBehaviour
         var wait = new WaitForSeconds(_timeToRefreshResourse);
 
         while (enabled)
-        {
-            EnvironmentItem nearestItem = _resourseDetector.GetRandomNearestItem();
-
-            if (nearestItem != null && _unemployedWorkers.Count > 0)
+        {    
+            if (_resourseHandler.AvailableResourse != 0 && _unemployedWorkers.Count > 0)
             {
+                EnvironmentItem nearestItem = _resourseHandler.GetRandomNearestItem();
                 Worker currentWorker = _unemployedWorkers[UnityEngine.Random.Range(0, _unemployedWorkers.Count)];
                 _unemployedWorkers.Remove(currentWorker);
-                _employedWorkers.Add(currentWorker);
                 currentWorker.SetNewTarget(nearestItem.transform);
+                currentWorker.FinishedWork += RefreshUnemployedWorkers;
             }
 
             yield return wait;
         }
+    }
+
+    private void RefreshUnemployedWorkers(Worker worker)
+    {
+        _unemployedWorkers.Add(worker);
+        worker.FinishedWork -= RefreshUnemployedWorkers;
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ForestAreaResourseSpawner : ResourseSpawner<EnvironmentItem>
 {
-    private void Start()
+    public override void Start()
     {
         LayerIndex = TerrainLayersData.ForestLayer;
-        StartCoroutine(StartSpawn());
+        base.Start();
     }
 }

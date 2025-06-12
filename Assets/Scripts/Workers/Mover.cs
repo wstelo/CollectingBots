@@ -6,11 +6,13 @@ public class Mover : MonoBehaviour
 {
     private NavMeshAgent _agent;
 
+    public bool HasActivePath => _agent.remainingDistance > _agent.stoppingDistance;
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
     }
-
+        
     public void MoveToPoint(Vector3 point)
     {
         _agent.isStopped = false;

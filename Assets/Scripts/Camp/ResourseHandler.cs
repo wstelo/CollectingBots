@@ -2,30 +2,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(ResourseDetector))]
 
 public class ResourseHandler : MonoBehaviour
 {
-    [SerializeField] private LayerMask _resoursesMask;
-    [SerializeField] private int _detectingRadius = 100;
+    private ResourseDetector _resourseDetector;
+    private List<EnvironmentItem> _resourses = new List<EnvironmentItem>();
 
-    private List<Collider> _resourses = new List<Collider>();
-    private List<Collider> _sortedResourses = new List<Collider>();
-    private SphereCollider _collider;
+    public int AvailableResourse => _resourses.Count;
 
     private void Awake()
     {
-        _collider = GetComponent<SphereCollider>();
-        _collider.isTrigger = true;
-        _collider.radius = _detectingRadius;
+        _resourseDetector = GetComponent<ResourseDetector>();
+    }
+
+    private void OnEnable()
+    {
+        _resourseDetector.Entered += AddObject;
+    }
+
+    private void OnDisable()
+    {
+        _resourseDetector.Entered -= AddObject;
+    }
+
+    private void AddObject(EnvironmentItem item)
+    {
+        _resourses.Add(item);
     }
 
     public EnvironmentItem GetRandomNearestItem()
     {
-        if(_sortedResourses.Count != 0)
+        if(_resourses.Count != 0)
         {
-            _sortedResourses[0].TryGetComponent(out EnvironmentItem resourse);
-            _sortedResourses.Remove(_sortedResourses[0]);
+            EnvironmentItem resourse = _resourses.OrderBy(x => gameObject.transform.position.SqrDistance(x.transform.position)).ToList()[0];
+            _resourses.Remove(resourse);
 
             return resourse;
         }
@@ -33,19 +44,15 @@ public class ResourseHandler : MonoBehaviour
         return null;
     }
 
-    public void RemoveResourse(EnvironmentItem item)
-    {
-        item.TryGetComponent(out Collider collider);
 
-        if (_sortedResourses.Contains(collider))
-        {
-            _sortedResourses.Remove(collider);
-            SortResoursesByDistance();
-        }
-    }
+    //public void RemoveResourse(EnvironmentItem item)
+    //{
+    //    item.TryGetComponent(out Collider collider);
 
-    private void SortResoursesByDistance()
-    {
-        _sortedResourses = _resourses.OrderBy(x => gameObject.transform.position.SqrDistance(x.transform.position)).ToList();
-    }
+    //    if (_sortedResourses.Contains(collider))
+    //    {
+    //        _sortedResourses.Remove(collider);
+    //        SortResoursesByDistance();
+    //    }
+    //}
 }

@@ -5,19 +5,19 @@ using UnityEngine;
 public class WorkerMiningState : State
 {
     private WorkerAnimatorController _controller;
-    private WorkerBag _workerBag;
+    private WorkerBag _workerBags;
     private Worker _worker;
     private float _currentMiningTime = 0f;
     private float _delayToMining = 0.9f;
     private float _minTime;
     private float _damage;
 
-    public WorkerMiningState(StateMachine stateMachine, WorkerAnimatorController animator, float damage, WorkerBag workerBag, Worker worker) : base(stateMachine)
+    public WorkerMiningState(StateMachine stateMachine, WorkerAnimatorController animator, float damage, WorkerBag workerBags, Worker worker) : base(stateMachine)
     {
         _controller = animator;
         _damage = damage;
         _worker = worker;
-        _workerBag = workerBag;
+        _workerBags = workerBags;
     }
 
     public override void Enter()
@@ -48,7 +48,7 @@ public class WorkerMiningState : State
 
     private void ChangeToMovementState(EnvironmentItem item)
     {
-        _workerBag.PlaceProduct(item);
+        _workerBags.PlaceProduct(item);
         StateMachine.SetState<WorkerReturnToBaseState>();
     }
 }

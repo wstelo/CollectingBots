@@ -3,15 +3,15 @@ using UnityEngine;
 public class SpawnPointHandler : MonoBehaviour
 {
     [SerializeField] private TerrainLayerHandler _terrainLayerHandler;
-    [SerializeField] private Terrain _terrain;
-    [SerializeField] private LayerMask _terrainMask;
-    [SerializeField] private LayerMask _ObstacleMask;
     [SerializeField] private float _obstacleRadius = 5;
+    [SerializeField] private LayerMask _ObstacleMask;
+    [SerializeField] private LayerMask _terrainMask;
+    [SerializeField] private Terrain _terrain;
 
+    private bool _isCorrectPoint = false;
+    private bool _isCorrectHit = false;
     private Vector3 _startPointToRay;
     private float _maxHeight = 350f;
-    private bool _isCorrectHit = false;
-    private bool _isCorrectPoint = false;
     private float _terrainHeight;
     private float _terrainWidth;
 

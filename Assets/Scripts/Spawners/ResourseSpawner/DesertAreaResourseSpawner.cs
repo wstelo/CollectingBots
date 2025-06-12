@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DesertAreaResourseSpawner : ResourseSpawner<EnvironmentItem>
 {
-    private void Start()
+    public override void Start()
     {
         LayerIndex = TerrainLayersData.DesertLayer;
-        StartCoroutine(StartSpawn());
+        base.Start();
     }
 }
