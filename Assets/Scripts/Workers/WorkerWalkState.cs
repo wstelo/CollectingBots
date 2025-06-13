@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class WorkerWalkState : State
 {
     private WorkerColllisionDetector _collisionDetector;
@@ -18,7 +16,7 @@ public class WorkerWalkState : State
     public override void Enter()
     {
         _controller.StartWalkAnimation();
-        SetDesiredPosition(_worker.CurrentTarget);
+        SetDesiredPosition(_worker.CurrentResourse);
         _collisionDetector.ResourseDetected += ChangeStateToMining;
     }
 
@@ -29,14 +27,14 @@ public class WorkerWalkState : State
         _collisionDetector.ResourseDetected -= ChangeStateToMining;
     }
 
-    private void SetDesiredPosition(Transform target)
+    private void SetDesiredPosition(EnvironmentItem target)
     {
         _mover.MoveToPoint(target.transform.position);
     }
 
     private void ChangeStateToMining(EnvironmentItem item)
     {
-        if(item.transform.position == _worker.CurrentTarget.position)
+        if(item.transform.position == _worker.CurrentResourse.transform.position)
         {
             _mover.StopMovement();
             StateMachine.SetState<WorkerMiningState>();

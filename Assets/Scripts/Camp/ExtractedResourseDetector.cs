@@ -14,10 +14,10 @@ public class ExtractedResourseDetector : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out WorkerBag bag))
-        {           
+        {
             if (bag.IsUploaded)
             {
-                IResoursable product = bag.GiveAwayCurrentProduct();
+                EnvironmentItem product = bag.GiveAwayCurrentProduct();
                 product.CollectedObject();
                 product.Accept(_visitorCollector);
             }

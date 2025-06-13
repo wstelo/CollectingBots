@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 
 public class StateMachine
 {
@@ -12,11 +11,6 @@ public class StateMachine
     public void AddState(State state)
     {
         _states.Add(state.GetType(), state);
-    }
-
-    public void Update()
-    {
-        _currentState?.Update();
     }
 
     public void FixedUpdate()

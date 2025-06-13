@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WorkerMiningState : State
@@ -7,48 +6,41 @@ public class WorkerMiningState : State
     private WorkerAnimatorController _controller;
     private WorkerBag _workerBags;
     private Worker _worker;
-    private float _currentMiningTime = 0f;
     private float _delayToMining = 0.9f;
-    private float _minTime;
     private float _damage;
 
     public WorkerMiningState(StateMachine stateMachine, WorkerAnimatorController animator, float damage, WorkerBag workerBags, Worker worker) : base(stateMachine)
     {
+        _workerBags = workerBags;
         _controller = animator;
         _damage = damage;
         _worker = worker;
-        _workerBags = workerBags;
     }
 
     public override void Enter()
     {
         _controller.StartMiningAnimation();
-        _worker.CurrentResourse.Extracted += ChangeToMovementState;
+        _worker.StartCoroutine(Mining());
     }
 
-    public override void Update()
+    private IEnumerator Mining()
     {
-        if(_worker.CurrentResourse != null)
+        var wait = new WaitForSeconds(_delayToMining);
+
+        while (_worker.CurrentResourse.CurrentHealth > 0)
         {
-            _currentMiningTime += Time.deltaTime;
+            yield return wait;
 
-            if (_currentMiningTime > _delayToMining)
-            {
-                _worker.CurrentResourse.Extract(_damage);
-
-                _currentMiningTime = _minTime;
-            }
+            _worker.CurrentResourse.Extract(_damage);
         }
+
+        _workerBags.PlaceProduct(_worker.CurrentResourse);
+        _worker.ClearCurrentResourse();
+        StateMachine.SetState<WorkerReturnToBaseState>();
     }
 
     public override void Exit()
     {
         _controller.StopMiningAnimation();
-    }
-
-    private void ChangeToMovementState(EnvironmentItem item)
-    {
-        _workerBags.PlaceProduct(item);
-        StateMachine.SetState<WorkerReturnToBaseState>();
     }
 }

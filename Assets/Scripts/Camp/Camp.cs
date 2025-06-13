@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(WorkerHandler))]
+[RequireComponent(typeof(WorkerCreator))]
 
 public class Camp : MonoBehaviour
 {
@@ -13,11 +12,11 @@ public class Camp : MonoBehaviour
     [SerializeField] private int _startWorkerCount = 3;
 
     private List<Worker> _unemployedWorkers = new List<Worker>();
-    private WorkerHandler _workerHandler;
+    private WorkerCreator _workerHandler;
 
     private void Awake()
     {
-        _workerHandler = GetComponent<WorkerHandler>();
+        _workerHandler = GetComponent<WorkerCreator>();
     }
 
     private void Start()
@@ -37,7 +36,7 @@ public class Camp : MonoBehaviour
                 EnvironmentItem nearestItem = _resourseHandler.GetRandomNearestItem();
                 Worker currentWorker = _unemployedWorkers[UnityEngine.Random.Range(0, _unemployedWorkers.Count)];
                 _unemployedWorkers.Remove(currentWorker);
-                currentWorker.SetNewTarget(nearestItem.transform);
+                currentWorker.SetCurrentResourse(nearestItem);
                 currentWorker.FinishedWork += RefreshUnemployedWorkers;
             }
 

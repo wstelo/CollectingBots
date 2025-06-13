@@ -13,13 +13,13 @@ public class WorkerIdleState : State
     {
         _worker.FinishWork();
         _controller.StartIdleAnimation();
-        _worker.EmployedResourseDetected += WalkToPoint;
+        _worker.AssignedNewTarget += WalkToPoint;
     }
 
     public override void Exit()
     {
         _controller.StopIdleAnimation();
-        _worker.EmployedResourseDetected -= WalkToPoint;
+        _worker.AssignedNewTarget -= WalkToPoint;
     }
 
     private void WalkToPoint()

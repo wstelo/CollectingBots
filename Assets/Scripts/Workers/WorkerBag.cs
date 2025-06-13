@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class WorkerBag : MonoBehaviour
 {
@@ -14,19 +11,14 @@ public class WorkerBag : MonoBehaviour
     public void PlaceProduct(EnvironmentItem item)
     {
         _currentProduct = item;
-        item.transform.SetParent(_productPosition, true);
-        item.transform.localPosition = Vector3.zero;
+        _currentProduct.SetAsChild(_productPosition);
     }
 
-    public IResoursable GiveAwayCurrentProduct()
+    public EnvironmentItem GiveAwayCurrentProduct()
     {
-        if(_currentProduct.TryGetComponent(out IResoursable item1))
-        {
-            _currentProduct.transform.SetParent(null, true);
-            _currentProduct = null;
-            return item1;
-        }
-        
-        return null;
+        _currentProduct.SetAsFree();
+        EnvironmentItem tempProduct = _currentProduct;
+        _currentProduct = null;
+        return tempProduct;
     }
 }

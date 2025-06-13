@@ -6,8 +6,8 @@ using System.Linq;
 
 public class ResourseHandler : MonoBehaviour
 {
-    private ResourseDetector _resourseDetector;
     private List<EnvironmentItem> _resourses = new List<EnvironmentItem>();
+    private ResourseDetector _resourseDetector;
 
     public int AvailableResourse => _resourses.Count;
 
@@ -43,16 +43,4 @@ public class ResourseHandler : MonoBehaviour
 
         return null;
     }
-
-
-    //public void RemoveResourse(EnvironmentItem item)
-    //{
-    //    item.TryGetComponent(out Collider collider);
-
-    //    if (_sortedResourses.Contains(collider))
-    //    {
-    //        _sortedResourses.Remove(collider);
-    //        SortResoursesByDistance();
-    //    }
-    //}
 }

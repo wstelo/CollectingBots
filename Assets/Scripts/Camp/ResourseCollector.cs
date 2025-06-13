@@ -1,28 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ResourseCollector : MonoBehaviour
 {
-    public int StoneCount { get; private set; } = 0;
-    public int TreeCount { get; private set; } = 0;
-    public int IronCount { get; private set; } = 0;
+    private int _stoneCount = 0;
+    private int _treeCount = 0;
+    private int _ironCount = 0;
+
+    public event Action <int> WoodCountChanged;
+    public event Action <int> StoneCountChanged;
+    public event Action <int> IronCountChanged;
 
     public void IncreaseStoneCount()
     {
-        StoneCount += 1;
-        Debug.Log($"{StoneCount} - Stone");
+        _stoneCount += 1;
+        StoneCountChanged?.Invoke(_stoneCount);
     }
 
     public void IncreaseTreeCount ()
     {
-        TreeCount += 1;
-        Debug.Log($"{TreeCount} - Tree");
+        _treeCount += 1;
+        WoodCountChanged?.Invoke(_treeCount);
     }
 
     public void IncreaseIronCount()
     {
-        IronCount += 1;
-        Debug.Log($"{IronCount} - Iron");
+        _ironCount += 1;
+        IronCountChanged?.Invoke(_ironCount);
     }
 }
