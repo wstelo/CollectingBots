@@ -10,18 +10,23 @@ public class CameraZoomer : MonoBehaviour
     [SerializeField] private float _maxZoom = 110f;
     [SerializeField] private float _zoomSpeed = 20f;
 
-    private Vector3 nextPosition;
+    private Vector3 _nextPosition;
 
-    private void Awake()
+    private void OnEnable()
     {
         _inputHandler.OnValueChanged += ChangeValue;
     }
 
+    private void OnDisable()
+    {
+        _inputHandler.OnValueChanged -= ChangeValue;
+    }
+
     private void ChangeValue(float value)
     {
-        nextPosition = transform.position;
-        nextPosition.y = Mathf.Clamp(transform.position.y - value * _zoomSpeed, _minZoom, _maxZoom);
+        _nextPosition = transform.position;
+        _nextPosition.y = Mathf.Clamp(transform.position.y - value * _zoomSpeed, _minZoom, _maxZoom);
 
-        transform.position = nextPosition;
+        transform.position = _nextPosition;
     }
 }

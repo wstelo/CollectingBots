@@ -35,7 +35,7 @@ public class ResourseHandler : MonoBehaviour
     {
         if(_resourses.Count != 0)
         {
-            EnvironmentItem resourse = _resourses.OrderBy(x => gameObject.transform.position.SqrDistance(x.transform.position)).ToList()[0];
+            EnvironmentItem resourse = _resourses.OrderBy(x => gameObject.transform.position.SqrDistance(x.transform.position)).First();
             _resourses.Remove(resourse);
 
             return resourse;

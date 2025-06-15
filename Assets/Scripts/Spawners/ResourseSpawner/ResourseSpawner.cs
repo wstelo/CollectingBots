@@ -11,13 +11,12 @@ public abstract class ResourseSpawner<T> : MonoBehaviour where T : EnvironmentIt
     [SerializeField] private int _startCount = 30;
 
     protected int LayerIndex;
-
     protected ObjectPool<EnvironmentItem> Pool;
+
     private Vector3 _position = new Vector3(1, 20, 3);
     private int _poolMaxSize = 10;
     private int _currentActiveObjects = 0;
     private float _currentSpawnTime = 0.5f;
-    private Coroutine _StartSpawnCoroutine;
 
     private void Awake()
     {
@@ -32,7 +31,7 @@ public abstract class ResourseSpawner<T> : MonoBehaviour where T : EnvironmentIt
 
     public virtual void Start()
     {
-        _StartSpawnCoroutine = StartCoroutine(StartSpawn());
+        StartCoroutine(StartSpawn());
     }
 
     protected IEnumerator RefreshResourse()
